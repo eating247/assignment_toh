@@ -5,25 +5,21 @@ class TowerOfHanoi
     @height = height
     @linewidth = @height + 5
     @tower = (1..@height).to_a.reverse
+    @win_if = (1..@height).to_a.reverse
     @columns = [ @tower, [], [] ]
 
-    introduction
-    render
-    move
-    render
-    move
-    render
-    move
-    render
-    move
-    render
-    move
-    render
-    move
-    render
-    move
-    render
-    move
+introduction
+loop do
+  render
+  move
+
+  break if @columns[@destination_column] == @win_if
+end
+
+render
+print "\n\n\n\n\n\n"
+puts "Congratulations!!! You won :)"
+print "\n\n\n\n\n\n"
 
 
 
@@ -79,8 +75,6 @@ until win
   end
 
   def check_move
-    @moving_disk = @columns[@source_column].last
-
     if (0..2).include?(@source_column) == false || (0..2).include?(@destination_column) == false
       puts "Please enter your answer in the format '1,3'."
       move
@@ -88,10 +82,10 @@ until win
       true
     end
 
-    if @moving_disk.nil?
+    if @columns[@source_column].last.nil?
       puts "Not a valid move!"
       move
-    elsif @columns[@destination_column].empty? == false && @moving_disk > @columns[@destination_column].last 
+    elsif @columns[@destination_column].empty? == false && @columns[@source_column].last > @columns[@destination_column].last 
       puts "Not a valid move!"
       move
     else
@@ -100,14 +94,13 @@ until win
   end
 
   def register_move
-    @columns[@source_column].pop
+    @moving_disk = @columns[@source_column].pop
     @columns[@destination_column] << @moving_disk
 
     puts "test check: columns"
-    puts @columns[0].to_s
-    puts @columns[1].to_s
-    puts @columns[2].to_s
   end
+
+
 
 
   #end of class
